@@ -8,8 +8,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-
     private let squareView = UIView()
+    
+    private var gradientLayer: CAGradientLayer?
+    private var shadowLayer: CALayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +22,7 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        addGradient()
-        addShadow()
+        addLayersToView()
     }
     
     private func makeConstraints() {
@@ -34,24 +35,33 @@ class ViewController: UIViewController {
         ])
     }
     
-    private func addGradient() {
+    private func makeGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.colors = [UIColor.blue.cgColor, UIColor.red.cgColor]
         gradient.startPoint = CGPoint(x: 0, y: 0)
         gradient.endPoint = CGPoint(x: 1, y: 1)
         gradient.frame = squareView.bounds
         gradient.cornerRadius = 6
-        squareView.layer.addSublayer(gradient)
+        return gradient
     }
     
-    private func addShadow() {
+    private func makeShadowLayer() -> CALayer {
         let shadowLayer = CALayer()
         shadowLayer.shadowColor = UIColor.black.cgColor
         shadowLayer.shadowOffset = .zero
         shadowLayer.shadowOpacity = 0.8
         shadowLayer.shadowRadius = 6
         shadowLayer.shadowPath = UIBezierPath(rect: squareView.bounds).cgPath
-        squareView.layer.insertSublayer(shadowLayer, at: 0)
+        return shadowLayer
+    }
+    
+    private func addLayersToView() {
+        gradientLayer?.removeFromSuperlayer()
+        shadowLayer?.removeFromSuperlayer()
+        gradientLayer = makeGradientLayer()
+        shadowLayer = makeShadowLayer()
+        squareView.layer.addSublayer(shadowLayer!)
+        squareView.layer.addSublayer(gradientLayer!)
     }
 }
 
