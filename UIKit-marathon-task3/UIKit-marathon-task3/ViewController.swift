@@ -68,7 +68,7 @@ class ViewController: UIViewController {
         if slider.isTracking {
             animateView()
         } else {
-            UIView.animate(withDuration: 2) { [weak self] in
+            UIView.animate(withDuration: 1) { [weak self] in
                 self?.slider.setValue(1, animated: true)
                 self?.animateView()
             }
